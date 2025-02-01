@@ -17,8 +17,6 @@ public class TratadorErrosController {
     @ExceptionHandler(ContatoCadastradoException.class)
     public ResponseEntity<Map<String, Object>> handleContatoCadastradoException(ContatoCadastradoException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
-                "status", HttpStatus.CONFLICT.value(),
-                "error", "Conflito",
                 "message", ex.getMessage()
         ));
     }
@@ -30,10 +28,15 @@ public class TratadorErrosController {
 
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("error", "Erro de Validação");
-        response.put("message", "Um ou mais campos estão inválidos.");
         response.put("errors", errors); // Lista de campos e mensagens de erro
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(ContatoNaoEncontradoException.class)
+    public ResponseEntity<Map<String, Object>> handleContatoNaoEncontradoException(ContatoNaoEncontradoException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                "message", ex.getMessage()
+        ));
     }
 }

@@ -1,8 +1,10 @@
 package com.l2code.ContactEase.service;
 
+import com.l2code.ContactEase.dto.ContatoAtualizacaoDTO;
 import com.l2code.ContactEase.dto.ContatoCadastroDTO;
 import com.l2code.ContactEase.dto.ContatoRespostaDTO;
 import com.l2code.ContactEase.exception.ContatoCadastradoException;
+import com.l2code.ContactEase.exception.ContatoNaoEncontradoException;
 import com.l2code.ContactEase.mapper.ContatoMapper;
 import com.l2code.ContactEase.model.Contato;
 import com.l2code.ContactEase.repository.ContatoRepository;
@@ -46,5 +48,25 @@ public class ContatoService{
         return contatos.stream()
                 .map(ContatoMapper::toResposta)
                 .collect(Collectors.toList());
+    }
+
+    public ContatoRespostaDTO atualizarContato(Long id, @Valid ContatoAtualizacaoDTO dto) {
+        Contato contato = contatoRepository.findById(id).orElseThrow(() -> new ContatoNaoEncontradoException(id));
+
+        if (dto.nome() != null) {
+            contato.setNome(dto.nome());
+        }
+        if (dto.email() != null) {
+            contato.setEmail(dto.email());
+        }
+        if (dto.telefone() != null) {
+            contato.setTelefone(dto.telefone());
+        }
+        if (dto.celular() != null) {
+            contato.setCelular(dto.celular());
+        }
+
+        contatoRepository.save(contato);
+        return ContatoMapper.toResposta(contato);
     }
 }

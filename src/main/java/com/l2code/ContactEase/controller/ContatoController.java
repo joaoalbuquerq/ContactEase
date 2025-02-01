@@ -50,4 +50,10 @@ public class ContatoController {
         contatoService.inativarContato(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}/favoritar")
+    public ResponseEntity<Void> favoritarContato(@PathVariable Long id) {
+        contatoService.favoritarContato(id);
+        return ResponseEntity.noContent().build();
+    }
 }

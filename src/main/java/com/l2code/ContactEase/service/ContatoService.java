@@ -79,4 +79,12 @@ public class ContatoService{
         contato.setUltimaAlteracao(LocalDateTime.now());
         contatoRepository.save(contato);
     }
+
+    @Transactional
+    public void favoritarContato(Long id) {
+        Contato contato = contatoRepository.findById(id).orElseThrow(() -> new ContatoNaoEncontradoException(id));
+        contato.setFavorito("S");
+        contato.setUltimaAlteracao(LocalDateTime.now());
+        contatoRepository.save(contato);
+    }
 }

@@ -40,4 +40,11 @@ public class ContatoService{
                 .map(ContatoMapper::toResposta)
                 .collect(Collectors.toList());
     }
+
+    public List<ContatoRespostaDTO> buscarContatos(String telefone, String celular, String email, Long id) {
+        List<Contato> contatos = contatoRepository.buscarContatos(telefone, celular, email, id);
+        return contatos.stream()
+                .map(ContatoMapper::toResposta)
+                .collect(Collectors.toList());
+    }
 }

@@ -18,4 +18,14 @@ public interface ContatoRepository extends JpaRepository<Contato, Long> {
 
     @Query("SELECT c FROM Contato c WHERE (:ativo IS NULL OR c.ativo = :ativo)")
     List<Contato> findByAtivoOptional(@Param("ativo") String ativo);
+
+    @Query("SELECT c FROM Contato c WHERE " +
+            "(:telefone IS NULL OR c.telefone = :telefone) AND " +
+            "(:celular IS NULL OR c.celular = :celular) AND " +
+            "(:email IS NULL OR c.email = :email) AND " +
+            "(:id IS NULL OR c.id = :id)")
+    List<Contato> buscarContatos(@Param("telefone") String telefone,
+                                 @Param("celular") String celular,
+                                 @Param("email") String email,
+                                 @Param("id") Long id);
 }

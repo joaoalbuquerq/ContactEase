@@ -4,10 +4,14 @@ import com.l2code.ContactEase.dto.ContatoCadastroDTO;
 import com.l2code.ContactEase.dto.ContatoRespostaDTO;
 import com.l2code.ContactEase.exception.ContatoCadastradoException;
 import com.l2code.ContactEase.mapper.ContatoMapper;
+import com.l2code.ContactEase.model.Contato;
 import com.l2code.ContactEase.repository.ContatoRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ContatoService{
@@ -27,5 +31,13 @@ public class ContatoService{
         var contato = ContatoMapper.toEntity(dto);
         contatoRepository.save(contato);
         return ContatoMapper.toResposta(contato);
+    }
+
+    public List<ContatoRespostaDTO> listarContatosAtivos(String ativo) {
+
+        List<Contato> contatos = contatoRepository.findByAtivoOptional(ativo);
+        return contatos.stream()
+                .map(ContatoMapper::toResposta)
+                .collect(Collectors.toList());
     }
 }

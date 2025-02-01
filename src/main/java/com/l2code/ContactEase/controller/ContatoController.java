@@ -44,4 +44,10 @@ public class ContatoController {
     public ResponseEntity<ContatoRespostaDTO> atualizarContato(@PathVariable Long id, @Valid @RequestBody ContatoAtualizacaoDTO dto) {
         return ResponseEntity.ok(contatoService.atualizarContato(id, dto));
     }
+
+    @PatchMapping("/{id}/inativar")
+    public ResponseEntity<Void> inativarContato(@PathVariable Long id) {
+        contatoService.inativarContato(id);
+        return ResponseEntity.noContent().build();
+    }
 }

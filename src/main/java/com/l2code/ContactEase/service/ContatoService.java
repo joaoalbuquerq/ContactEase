@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +51,7 @@ public class ContatoService{
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public ContatoRespostaDTO atualizarContato(Long id, @Valid ContatoAtualizacaoDTO dto) {
         Contato contato = contatoRepository.findById(id).orElseThrow(() -> new ContatoNaoEncontradoException(id));
 
@@ -68,5 +70,13 @@ public class ContatoService{
 
         contatoRepository.save(contato);
         return ContatoMapper.toResposta(contato);
+    }
+
+    @Transactional
+    public void inativarContato(Long id) {
+        Contato contato = contatoRepository.findById(id).orElseThrow(() -> new ContatoNaoEncontradoException(id));
+        contato.setAtivo("N");
+        contato.setUltimaAlteracao(LocalDateTime.now());
+        contatoRepository.save(contato);
     }
 }
